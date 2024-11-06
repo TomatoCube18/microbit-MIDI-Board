@@ -102,6 +102,12 @@ midi_channel_prog = 0xC0  # MIDI command for changeing the channel Instruments r
 # Choose a note (e.g., Middle C)
 note = 0x60  # MIDI number for Middle C
 
+# Prevent micro:bit being stuck in MIDI (UART) Mode
+if button_a.is_pressed():
+    while True:
+        display.show(Image.SKULL)
+        # Do Nothing Here
+
 # Initialize the UART Port for Midi Sending
 uart.init(baudrate=31250, bits=8, parity=None, stop=1, tx=pin15)
 uart.write(bytes([midi_channel_prog | (midi_channel - 1), midi_instrument]))
@@ -125,10 +131,9 @@ while True:
 - **MIDI Commands**: MIDI uses "commands" to communicate. For example:
 - `0x90` tells the device to turn a note on (start playing a sound).
   - `0x80` tells it to turn a note off (stop playing the sound).
-
 - **Note Selection**: `note = 60` represents the note "Middle C." You can change this number to play different notes. Refer to **Appendix A** below for more.
-
 - **Volume Control**: `127` and `0` are maximum and minimum volume values, respectively.
+- **MicroPython REPL Escape sequence**: Since MIDI communication on the Micro:Bit uses the UART component to send data, redirecting UART to **pin15** for MIDI means losing access to the REPL console. This could make it challenging to exit your current Python code or load new code. To avoid being "stuck" in MIDI mode, code has been added to allow easy access to the REPL console. Simply press the **RESET **button on the back of the Micro, while holding **Button A** on the front to switch back to the REPL console. A **Skull** would show up on the LED display.
 
 
 
@@ -180,6 +185,12 @@ note_off = 0x80    # MIDI "note off" command
 # Define percussion notes for bass drum and snare drum
 bass_drum = 35     # MIDI note for bass drum
 snare_drum = 38    # MIDI note for snare drum
+
+# Prevent micro:bit being stuck in MIDI (UART) Mode
+if button_a.is_pressed():
+    while True:
+        display.show(Image.SKULL)
+        # Do Nothing Here
 
 # Initialize the UART Port for Midi Sending
 uart.init(baudrate=31250, bits=8, parity=None, stop=1, tx=pin15)
